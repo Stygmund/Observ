@@ -5,6 +5,7 @@ LogCore: Standardized JSON logging library with validation.
 import json
 import logging
 from datetime import datetime
+from logging.handlers import RotatingFileHandler
 from typing import Any, Dict, Optional
 
 
@@ -55,6 +56,57 @@ class JSONFormatter(logging.Formatter):
         return json.dumps(log_data, default=str)
 
 
+def setup_logging(
+    level: int = logging.INFO,
+    log_file: Optional[str] = None,
+    use_json: bool = True,
+    max_bytes: int = 50 * 1024 * 1024,  # 50MB
+    backup_count: int = 5
+) -> None:
+    """
+    Configure the root logger once at application startup.
+
+    All child loggers (via get_logger(__name__)) inherit these handlers,
+    so modules don't need to specify log_file individually.
+
+    Args:
+        level: Logging level (default: INFO)
+        log_file: Optional file path for rotating file handler
+        use_json: Use JSON formatter (default: True)
+        max_bytes: Max log file size before rotation (default: 50MB)
+        backup_count: Number of rotated files to keep (default: 5)
+
+    Example:
+        setup_logging(log_file="logs/app.log")
+        # Then in any module:
+        log = get_logger(__name__)  # No log_file needed
+    """
+    root = logging.getLogger()
+    root.setLevel(level)
+
+    # Clear existing handlers to avoid duplicates on re-init
+    root.handlers.clear()
+
+    formatter = JSONFormatter() if use_json else logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+    # Console handler
+    console = logging.StreamHandler()
+    console.setLevel(level)
+    console.setFormatter(formatter)
+    root.addHandler(console)
+
+    # Rotating file handler
+    if log_file:
+        file_handler = RotatingFileHandler(
+            log_file, maxBytes=max_bytes, backupCount=backup_count
+        )
+        file_handler.setLevel(level)
+        file_handler.setFormatter(formatter)
+        root.addHandler(file_handler)
+
+
 def get_logger(
     name: str,
     level: int = logging.INFO,
@@ -83,7 +135,7 @@ def get_logger(
     # Check if we already have handlers to avoid duplicates
     has_console_handler = any(isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
                               for h in logger.handlers)
-    has_file_handler = any(isinstance(h, logging.FileHandler) and h.baseFilename == log_file
+    has_file_handler = any(isinstance(h, (logging.FileHandler, RotatingFileHandler)) and h.baseFilename == log_file
                            for h in logger.handlers) if log_file else False
 
     # Console handler
@@ -102,7 +154,7 @@ def get_logger(
 
     # File handler (optional)
     if log_file and not has_file_handler:
-        file_handler = logging.FileHandler(log_file)
+        file_handler = RotatingFileHandler(log_file, maxBytes=50*1024*1024, backupCount=5)
         file_handler.setLevel(level)
 
         if use_json:

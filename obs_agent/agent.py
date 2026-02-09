@@ -16,6 +16,7 @@ import yaml
 
 from obs_agent.collectors import SystemMetrics, HealthChecker, LogTailer
 from obs_agent.db import PostgreSQLWriter
+from obs_agent.file_writer import FileWriter
 
 
 class MonitoringAgent:
@@ -25,7 +26,7 @@ class MonitoringAgent:
         self,
         vps_name: str,
         app_name: str,
-        postgres_url: str,
+        writer,  # PostgreSQLWriter or FileWriter
         collection_interval: int = 60,
         health_checks: Optional[list] = None,
         log_files: Optional[list] = None
@@ -40,8 +41,8 @@ class MonitoringAgent:
         self.health_checker = HealthChecker(vps_name, app_name, health_checks or [])
         self.log_tailer = LogTailer(vps_name, app_name, log_files or [])
 
-        # Initialize database writer
-        self.db_writer = PostgreSQLWriter(postgres_url)
+        # Use provided writer (postgres or file)
+        self.db_writer = writer
 
         # Setup signal handlers
         signal.signal(signal.SIGTERM, self._handle_shutdown)
@@ -124,14 +125,23 @@ def main(config: str, app_name: str, vps_name: Optional[str]):
     if not vps_name:
         vps_name = socket.gethostname()
 
-    # Get PostgreSQL URL from config or environment
-    postgres_url = monitoring_config.get('postgres_url')
-    if not postgres_url:
-        click.echo("postgres_url not configured in monitoring section", err=True)
-        sys.exit(1)
+    # Select output writer based on config
+    output_mode = monitoring_config.get('output', 'postgres')
 
-    # Expand environment variables in postgres_url
-    postgres_url = os.path.expandvars(postgres_url)
+    if output_mode == 'file':
+        output_dir = monitoring_config.get('output_dir')
+        if not output_dir:
+            click.echo("output_dir not configured for file output mode", err=True)
+            sys.exit(1)
+        output_dir = os.path.expandvars(output_dir)
+        writer = FileWriter(output_dir)
+    else:
+        postgres_url = monitoring_config.get('postgres_url')
+        if not postgres_url:
+            click.echo("postgres_url not configured in monitoring section", err=True)
+            sys.exit(1)
+        postgres_url = os.path.expandvars(postgres_url)
+        writer = PostgreSQLWriter(postgres_url)
 
     # Collection interval
     collection_interval = monitoring_config.get('collection_interval', 60)
@@ -152,7 +162,7 @@ def main(config: str, app_name: str, vps_name: Optional[str]):
     agent = MonitoringAgent(
         vps_name=vps_name,
         app_name=app_name,
-        postgres_url=postgres_url,
+        writer=writer,
         collection_interval=collection_interval,
         health_checks=health_checks,
         log_files=log_files
