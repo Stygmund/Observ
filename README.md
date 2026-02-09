@@ -73,7 +73,7 @@ Observ combines powerful deployment automation with comprehensive fleet monitori
 ### On VPS
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/you/deployment-paradigm/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/stygmund/observ/main/install.sh | bash
 ```
 
 Or install manually:
@@ -417,7 +417,7 @@ export OBSERV_DB_URL="postgresql://user:pass@localhost:5432/observ_metrics"
 **2. Enable monitoring during setup:**
 
 ```bash
-deploy-paradigm setup myapp https://github.com/user/myapp.git
+deploy-paradigm setup myapp git@github.com:youruser/myapp.git
 
 # When prompted:
 # Enable observ monitoring? [y/N]: y
