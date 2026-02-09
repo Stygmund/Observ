@@ -1,0 +1,14 @@
+name: flask-example
+type: python
+healthCheck: /health
+command: python main.py
+
+# Optional: Use blue-green deployment strategy
+# deployment:
+#   strategy: blue-green
+#   keepInactive: true
+
+# Optional: Smoke tests
+# smokeTests:
+#   - endpoint: /health
+#     expectedStatus: 200

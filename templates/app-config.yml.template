@@ -1,0 +1,18 @@
+# VPS-specific configuration
+# This file is NOT in git - it stays on the VPS
+
+port: 8000
+manager: systemd  # systemd or pm2
+env: production
+
+# Monitoring configuration (optional)
+monitoring:
+  enabled: false  # Set to true to enable obs_agent monitoring
+  postgres_url: ${OBSERV_DB_URL}  # PostgreSQL connection string (set in .env.{environment})
+  collection_interval: 60  # Metrics collection interval in seconds
+  health_checks:
+    - url: http://localhost:{port}/health
+      interval: 30
+      timeout: 5
+  log_files:
+    - /opt/deployments/{app}/current/logs/app.log

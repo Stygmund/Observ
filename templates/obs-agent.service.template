@@ -1,0 +1,18 @@
+[Unit]
+Description=Observ Monitoring Agent for {app_name}
+After=network.target {app_name}.service
+Wants={app_name}.service
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/deployments/{app_name}/current
+Environment=PYTHONPATH=/opt/deployments/{app_name}/current
+ExecStart=/opt/deployments/{app_name}/venv/bin/python -m obs_agent.agent --config /opt/deployments/{app_name}/config.yml --app-name {app_name}
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

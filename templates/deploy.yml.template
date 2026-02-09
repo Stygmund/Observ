@@ -1,0 +1,29 @@
+# Deployment configuration
+# See: https://github.com/you/deployment-paradigm
+
+# Required fields
+name: my-app              # Deployment name
+type: python              # python|docker|node|static (node support coming soon)
+healthCheck: /health      # Health check endpoint (relative path)
+
+# Optional deployment strategy
+deployment:
+  strategy: blue-green    # simple | blue-green | rolling (default: simple)
+  keepInactive: true      # For blue-green: keep old environment for instant rollback
+  batchDelay: 10          # For rolling: stabilization delay in seconds (default: 10)
+
+# Optional smoke tests (run after deployment)
+smokeTests:
+  - endpoint: /api/status
+    expectedStatus: 200
+  - endpoint: /api/health/deep
+    method: GET
+  - script: ./scripts/smoke-test.sh
+
+# Optional fields
+command: python -m uvicorn main:app  # Override default start command
+
+# Optional hooks
+hooks:
+  preDeploy: ./scripts/migrate.sh    # Run before deployment (e.g., migrations)
+  postDeploy: ./scripts/notify.sh    # Run after successful deployment

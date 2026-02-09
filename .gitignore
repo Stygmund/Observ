@@ -1,0 +1,85 @@
+.grep-patterns.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.production
+*.env
+
+# Logs
+*.log
+test-app.log
+logcore-test.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Deployment artifacts
+releases/
+deployments/
+
+# Documentation builds
+docs/_build/
+site/
+
+# Test monitoring files (for local testing)
+test-monitoring-config.yml
+test-monitoring.sh
+test-log-generator.py
+TEST-MONITORING-GUIDE.md

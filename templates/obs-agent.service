@@ -1,0 +1,29 @@
+[Unit]
+Description=Observ Monitoring Agent for %i
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/deployments/%i
+ExecStart=/opt/deployment-paradigm/venv/bin/python -m obs_agent.agent \
+  --config /opt/deployments/%i/config.yml \
+  --app-name %i
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Resource limits
+MemoryLimit=100M
+CPUQuota=10%
+
+# Security hardening
+PrivateTmp=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/deployments/%i
+
+[Install]
+WantedBy=multi-user.target

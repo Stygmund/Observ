@@ -1,0 +1,40 @@
+# Observ Monitoring Agent Configuration Template
+# Copy this to /opt/deployments/{app-name}/config.yml and customize
+
+# Application deployment settings (existing)
+port: 8000
+manager: systemd
+env: production
+
+# Monitoring configuration (NEW)
+monitoring:
+  # Enable/disable monitoring for this application
+  enabled: true
+
+  # PostgreSQL connection string (use ${VAR} for environment variables)
+  # Set OBSERV_DB_URL in /opt/deployments/{app}/.env.production
+  postgres_url: ${OBSERV_DB_URL}
+
+  # How often to collect metrics (seconds)
+  collection_interval: 60
+
+  # HTTP health check endpoints
+  health_checks:
+    - url: http://localhost:8000/health
+      interval: 30
+      timeout: 5
+    # Add more endpoints as needed
+    # - url: http://localhost:8000/api/status
+    #   interval: 60
+    #   timeout: 10
+
+  # Log files to monitor (use {app} placeholder for app name)
+  log_files:
+    - /opt/deployments/{app}/current/logs/app.log
+    # Add more log files as needed
+    # - /var/log/{app}/error.log
+
+# Example minimal configuration:
+# monitoring:
+#   enabled: true
+#   postgres_url: ${OBSERV_DB_URL}
