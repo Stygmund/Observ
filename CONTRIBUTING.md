@@ -19,7 +19,7 @@ Be respectful, constructive, and professional in all interactions.
 
 1. **Fork and clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/observ.git
+   git clone https://github.com/stygmund/observ.git
    cd observ
    ```
 
@@ -251,7 +251,7 @@ Contributors will be recognized in:
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+By contributing, you agree that your contributions will be licensed under the Apache License 2.0.
 
 ---
 

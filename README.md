@@ -2,7 +2,7 @@
 
 > A standardized deployment system for VPS applications with zero-downtime deploys, health checks, automatic rollback, and integrated fleet monitoring.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-12+-blue.svg)](https://www.postgresql.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -79,8 +79,8 @@ curl -sSL https://raw.githubusercontent.com/you/deployment-paradigm/main/install
 Or install manually:
 
 ```bash
-git clone https://github.com/you/deployment-paradigm /opt/deployment-paradigm
-cd /opt/deployment-paradigm
+git clone https://github.com/stygmund/observ /opt/observ
+cd /opt/observ
 pip install -r requirements.txt
 sudo ln -s /opt/deployment-paradigm/deploy_paradigm.py /usr/local/bin/deploy-paradigm
 ```
@@ -92,7 +92,7 @@ sudo ln -s /opt/deployment-paradigm/deploy_paradigm.py /usr/local/bin/deploy-par
 On your VPS:
 
 ```bash
-deploy-paradigm setup my-api git@github.com:you/my-api.git --port 8000 --manager systemd
+deploy-paradigm setup my-api git@github.com:youruser/my-api.git --port 8000 --manager systemd
 ```
 
 This creates:
@@ -548,8 +548,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - **Documentation**: Check the [docs/](docs/) directory
-- **Issues**: [GitHub Issues](https://github.com/yourusername/observ/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/observ/discussions)
+- **Issues**: [GitHub Issues](https://github.com/stygmund/observ/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/stygmund/observ/discussions)
 
 ---
 

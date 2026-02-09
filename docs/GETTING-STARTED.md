@@ -17,14 +17,14 @@ Before you begin, ensure you have:
 ### Option A: Quick Install (Recommended)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/yourusername/observ/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/stygmund/observ/main/install.sh | bash
 ```
 
 ### Option B: Manual Install
 
 ```bash
 # Clone repository
-sudo git clone https://github.com/yourusername/observ /opt/observ
+sudo git clone https://github.com/stygmund/observ /opt/observ
 cd /opt/observ
 
 # Install Python dependencies

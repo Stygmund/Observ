@@ -474,4 +474,4 @@ A: Minimal. Metrics collected every 60s, health checks every 30s. CPU overhead: 
 
 ## License
 
-MIT - See [LICENSE](../LICENSE) for details
+Apache 2.0 - See [LICENSE](../LICENSE) for details
